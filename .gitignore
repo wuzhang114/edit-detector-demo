@@ -1,0 +1,4 @@
+# 忽略
+__pycache__/
+*.pyc
+.DS_Store

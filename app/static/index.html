@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8">
+<title>AI 修图检测 Demo</title>
+<style>
+  body { font-family: sans-serif; max-width: 900px; margin: 40px auto; padding: 0 20px; }
+  #drop { border: 2px dashed #888; border-radius: 8px; padding: 40px; text-align: center;
+          cursor: pointer; color: #555; }
+  #drop.hover { border-color: #07c; background: #f0f8ff; }
+  .row { display: flex; gap: 16px; margin-top: 20px; flex-wrap: wrap; }
+  .card { flex: 1; min-width: 260px; text-align: center; }
+  .card img { max-width: 100%; border-radius: 6px; }
+  #score { font-size: 28px; font-weight: bold; }
+  .bad { color: #c00; } .good { color: #080; }
+</style>
+</head>
+<body>
+<h1>AI 修图检测 Demo</h1>
+<p>冻结 DINOv2 + 3 万参数头 · 检测分数 + 编辑区域热图</p>
+<div id="drop">点击或拖拽图片到这里</div>
+<input type="file" id="file" hidden accept="image/*">
+<div class="row">
+  <div class="card"><h3>原图</h3><img id="orig" alt=""></div>
+  <div class="card"><h3>检测热图</h3><img id="heat" alt=""></div>
+  <div class="card"><h3>预测 Mask</h3><img id="mask" alt=""></div>
+</div>
+<div class="card"><h3>检测分数</h3><div id="score">—</div></div>
+
+<script>
+const drop = document.getElementById('drop');
+const fileInput = document.getElementById('file');
+drop.onclick = () => fileInput.click();
+drop.ondragover = e => { e.preventDefault(); drop.classList.add('hover'); };
+drop.ondragleave = () => drop.classList.remove('hover');
+drop.ondrop = e => {
+  e.preventDefault(); drop.classList.remove('hover');
+  if (e.dataTransfer.files.length) send(e.dataTransfer.files[0]);
+};
+fileInput.onchange = () => { if (fileInput.files.length) send(fileInput.files[0]); };
+
+async function send(file) {
+  document.getElementById('orig').src = URL.createObjectURL(file);
+  const fd = new FormData();
+  fd.append('file', file);
+  const r = await fetch('/predict', { method: 'POST', body: fd });
+  const d = await r.json();
+  document.getElementById('score').textContent = d.score.toFixed(4);
+  const el = document.getElementById('score');
+  el.className = d.score > 0.5 ? 'bad' : 'good';
+  document.getElementById('heat').src = 'data:image/png;base64,' + d.heatmap_b64;
+  document.getElementById('mask').src = 'data:image/png;base64,' + d.mask_b64;
+}
+</script>
+</body>
+</html>
