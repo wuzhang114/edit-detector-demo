@@ -18,6 +18,14 @@ python -m uvicorn api_server:app --host 0.0.0.0 --port 8000
 #    接口文档 http://127.0.0.1:8000/docs
 ```
 
+> ⚠️ 首次运行会自动下载 DINOv2 骨干权重 (~90MB, 来自 facebookresearch/dinov2)。
+> 若下载慢或失败(国内网络),可先手动下载放到缓存目录:
+> ```
+> # Windows: C:\Users\<你>\.cache\torch\hub\checkpoints\dinov2_vits14_pretrain.pth
+> # Linux:   ~/.cache/torch/hub/checkpoints/dinov2_vits14_pretrain.pth
+> # 下载地址: https://dl.fbaipublicfiles.com/dinov2/dinov2_vits14/dinov2_vits14_pretrain.pth
+> ```
+
 ## API
 
 | 端点 | 方法 | 说明 |
