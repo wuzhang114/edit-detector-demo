@@ -37,9 +37,9 @@ print(d["score"])                    # 0~1,>0.5 视为被编辑
 
 ## 测试图片 (`examples/`)
 
-- `fake_1~3.jpg`:AI 编辑过的图片(SDXL-inpaint 编辑)
-- `real_1~3.jpg`:对应的原始图片(未编辑)
-- 配对关系:fake_i 与 real_i 是同一张图编辑前/后
+- `fake_1~3.jpg`:AI 编辑过的图片(INP-X 修复式编辑,检测分数接近 1.0,热图清晰)
+- `real_1~3.jpg`:对应的原始图片(未编辑,检测分数 ~0.002)
+- `hard/fake_1~3.jpg`、`hard/real_1~3.jpg`:SDXL-inpaint 现代修图器编辑的"困难样本"——现代修图痕迹弱,检测分数可能偏低,属正常现象(论文 §4.4)
 
 ## 说明
 
