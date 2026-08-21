@@ -45,12 +45,12 @@ print(d["score"])                    # 0~1,>0.5 视为被编辑
 
 ## 测试图片 (`examples/`)
 
-- `fake_1~3.jpg`:AI 编辑过的图片(INP-X 修复式编辑,检测分数接近 1.0,热图清晰)
-- `real_1~3.jpg`:对应的原始图片(未编辑,检测分数 ~0.002)
+- `fake_1~10.jpg`:AI 编辑过的图片(INP-X 修复式编辑,检测分数接近 1.0,热图清晰)
+- `real_1~10.jpg`:对应的原始图片(未编辑,检测分数 ~0.001-0.003)
 - `hard/fake_1~3.jpg`、`hard/real_1~3.jpg`:SDXL-inpaint 现代修图器编辑的"困难样本"——现代修图痕迹弱,检测分数可能偏低,属正常现象(论文 §4.4)
 
 ## 说明
 
-- 模型:冻结 DINOv2 ViT-S/14(自动下载)+ 高通残差 + 29,699 参数 MLP 头(`app/weak_sup_v4_head.pt`)
+- 模型:冻结 DINOv2 ViT-S/14(自动下载)+ 高通残差 + 29,699 参数 MLP 头(`app/weak_sup_v4_head.pt`,source-disjoint 严格协议下训练)
 - 输入自动 resize 到 518×518,输出 37×37 热图
 - 学术工作,详见主仓库 wuzhang114/inpx-edit-detection
